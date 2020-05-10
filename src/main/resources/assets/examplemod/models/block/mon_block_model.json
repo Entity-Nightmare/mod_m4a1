@@ -1,0 +1,11 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "examplemod:blocks/block",
+    "up": "examplemod:blocks/block",
+    "north": "examplemod:blocks/block",
+    "east": "examplemod:blocks/block",
+    "south": "examplemod:blocks/block",
+    "west": "examplemod:blocks/block"
+  }
+}
