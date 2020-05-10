@@ -15,6 +15,10 @@ import org.apache.logging.log4j.Level;
 
 public class M4a1bullet {
 
+    public static final int DAMAGE = 5;
+    public static final float VELOCITY = 3.0F;
+    public static final int NB_BULLET = 3;
+
     @SubscribeEvent
     public void shot (PlayerInteractEvent event) {
         EntityPlayer player = event.getEntityPlayer();
@@ -32,8 +36,7 @@ public class M4a1bullet {
 
 
         ExampleMod.logger.log(Level.INFO, "Recu evenement player " + event.getClass());
-        float velocity = 1;
-        for (int i = 0; i < 3;i++) {
+        for (int i = 0; i < NB_BULLET; i++) {
             if (!player.capabilities.isCreativeMode) {
                 ItemStack arrows = findArrow(player);
                 if (arrows.isEmpty()) {
@@ -41,10 +44,12 @@ public class M4a1bullet {
                 }
                 arrows.shrink(1);
             }
-            EntityTippedArrow arrow = new BulletEntity(world, player.posX,player.posY + (double)player.getEyeHeight() - 0.10000000149011612D, player.posZ);
+            //EntityTippedArrow arrow = new BulletEntity(world, player.posX,player.posY + (double)player.getEyeHeight() - 0.10000000149011612D, player.posZ);
+            EntityTippedArrow arrow = new BulletEntity(world, player);
+            arrow.setDamage(DAMAGE);
             arrow.shootingEntity = player;
             arrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
-            arrow.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity * 3.0F, 1.0F);
+            arrow.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, VELOCITY, 0.0F);
             world.spawnEntity(arrow);
         }
     }
