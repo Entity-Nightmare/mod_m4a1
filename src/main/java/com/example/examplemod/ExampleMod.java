@@ -25,6 +25,9 @@ public class ExampleMod
 
     public static Logger logger;
 
+    private static Wildboar wildboar;
+    private static ItemBlock wildboarItem;
+
     private static MonBlock targetBlock;
     private static ItemBlock itemTargetBlock;
 
@@ -48,6 +51,8 @@ public class ExampleMod
 
     private void preInitTargetBlock() {
         MinecraftForge.EVENT_BUS.register(new M4a1bullet());
+
+
 
         targetBlock = new MonBlock();
         ForgeRegistries.BLOCKS.register(targetBlock);

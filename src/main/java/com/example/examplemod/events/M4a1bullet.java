@@ -15,8 +15,8 @@ import org.apache.logging.log4j.Level;
 
 public class M4a1bullet {
 
-    public static final int DAMAGE = 5;
-    public static final float VELOCITY = 3.0F;
+    public static final int DAMAGE = 7;
+    public static final float VELOCITY = 4.0F;
     public static final int NB_BULLET = 3;
 
     @SubscribeEvent
