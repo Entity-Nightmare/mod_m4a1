@@ -1,6 +1,6 @@
 package com.example.examplemod;
 
-import com.example.examplemod.events.M4a1bullet;
+import com.example.examplemod.events.FireArrowEvent;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -14,10 +14,14 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.logging.log4j.Logger;
+import util.Reference;
 
-@Mod(modid = ExampleMod.MODID, name = ExampleMod.NAME, version = ExampleMod.VERSION)
-public class ExampleMod
+@Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION)
+public class Main
 {
+    @Mod.Instance
+    public static net.minecraft.client.main.Main instance;
+
     public static final String MODID = "examplemod";
     public static final String NAME = "Example Mod";
     public static final String VERSION = "1.0";
@@ -26,12 +30,19 @@ public class ExampleMod
     public static Logger logger;
 
     private static Wildboar wildboar;
-    private static ItemBlock wildboarItem;
+    private static ItemBlock itemwildboar;
 
     private static MonBlock targetBlock;
     private static ItemBlock itemTargetBlock;
 
     public static Item itemM4a1;
+
+    public static Item itemDesertEagle;
+
+    public static Item itemCheyTac;
+
+    public static FireArrowEvent fireEvent = new FireArrowEvent();
+
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -50,9 +61,15 @@ public class ExampleMod
     }
 
     private void preInitTargetBlock() {
-        MinecraftForge.EVENT_BUS.register(new M4a1bullet());
+        MinecraftForge.EVENT_BUS.register(fireEvent);
 
 
+        wildboar = new Wildboar();
+        ForgeRegistries.BLOCKS.register(wildboar);
+
+        itemwildboar = new ItemBlock(wildboar);
+        itemwildboar.setRegistryName(wildboar.getRegistryName());
+        configureItemAndRegister(itemwildboar);
 
         targetBlock = new MonBlock();
         ForgeRegistries.BLOCKS.register(targetBlock);
@@ -61,14 +78,22 @@ public class ExampleMod
         itemTargetBlock.setRegistryName(targetBlock.getRegistryName());
         configureItemAndRegister(itemTargetBlock);
 
-        itemM4a1 = new Item();
-        itemM4a1.setCreativeTab(CreativeTabs.COMBAT);
-        itemM4a1.setRegistryName(com.example.examplemod.ExampleMod.MODID, "m4a1");
-        configureItemAndRegister(itemM4a1);
+        itemM4a1 = createItem("m4a1", 3);
+        itemDesertEagle = createItem("01_desert_eagle", 1);
+        itemCheyTac = createItem("25_chey_tac", 1);
 
     }
 
-    private void configureItemAndRegister(Item item) {
+    private static Item createItem(String type, int nbBullet) {
+        Item item = new Item();
+        item.setCreativeTab(CreativeTabs.COMBAT);
+        item.setRegistryName(Main.MODID, type);
+        configureItemAndRegister(item);
+        fireEvent.addItem(item, nbBullet);
+        return item;
+    }
+
+    private static void configureItemAndRegister(Item item) {
         ForgeRegistries.ITEMS.register(item);
         ModelResourceLocation rl = new ModelResourceLocation(item.getRegistryName(), "inventory");
         ModelLoader.setCustomModelResourceLocation(item, 0, rl);

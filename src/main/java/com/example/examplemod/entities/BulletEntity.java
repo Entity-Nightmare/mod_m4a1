@@ -1,6 +1,6 @@
 package com.example.examplemod.entities;
 
-import com.example.examplemod.ExampleMod;
+import com.example.examplemod.Main;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.util.math.RayTraceResult;
@@ -23,7 +23,7 @@ public class BulletEntity extends EntityTippedArrow {
 
     @Override
     protected void onHit(RayTraceResult raytraceResultIn) {
-        ExampleMod.logger.log(Level.INFO, "Fleche a touche un element");
+        Main.logger.log(Level.INFO, "Fleche a touche un element");
         if (raytraceResultIn.entityHit == null) {
             this.setDead();
         } else {

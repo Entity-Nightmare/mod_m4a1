@@ -1,6 +1,6 @@
 package com.example.examplemod.events;
 
-import com.example.examplemod.ExampleMod;
+import com.example.examplemod.Main;
 import com.example.examplemod.entities.BulletEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -13,11 +13,28 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Level;
 
-public class M4a1bullet {
+import java.util.HashMap;
+import java.util.Map;
+
+public class FireArrowEvent {
 
     public static final int DAMAGE = 7;
     public static final float VELOCITY = 4.0F;
     public static final int NB_BULLET = 3;
+
+    private Map<Item, ItemProperty> items = new HashMap<>();
+
+    private static class ItemProperty {
+        int nbBullet;
+
+        public ItemProperty(int nbBullet) {
+            this.nbBullet = nbBullet;
+        }
+    }
+
+    public void addItem(Item item, int nbBullet) {
+        items.put(item, new ItemProperty(nbBullet));
+    }
 
     @SubscribeEvent
     public void shot (PlayerInteractEvent event) {
@@ -29,14 +46,16 @@ public class M4a1bullet {
             return; // Sort de la methode
         }
         Item item = itemStack.getItem();
-        if (! item.equals(ExampleMod.itemM4a1)) { // ! -> non)
+
+        ItemProperty property = items.get(item);
+        if (property == null) { // ! -> non)
             return;
         }
 
 
 
-        ExampleMod.logger.log(Level.INFO, "Recu evenement player " + event.getClass());
-        for (int i = 0; i < NB_BULLET; i++) {
+        Main.logger.log(Level.INFO, "Recu evenement player " + event.getClass());
+        for (int i = 0; i < property.nbBullet; i++) {
             if (!player.capabilities.isCreativeMode) {
                 ItemStack arrows = findArrow(player);
                 if (arrows.isEmpty()) {

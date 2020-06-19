@@ -7,15 +7,15 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class MonBlock extends Block {
-    public static final String NAME = "mon_block";
+public class Wildboar extends Block {
+    public static final String NAME = "wild_boar";
 
-    public MonBlock() {
+    public Wildboar() {
         super(Material.DRAGON_EGG);
         setRegistryName(Main.MODID, NAME);
         setUnlocalizedName(Main.MODID + "." + NAME);
 
-        setCreativeTab(CreativeTabs.COMBAT);
+        setCreativeTab(CreativeTabs.MISC);
     }
 
     @SideOnly(Side.CLIENT)
